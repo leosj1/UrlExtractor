@@ -8,15 +8,8 @@
             "name": "Scrapy Crawl",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}\\Australia\\Australia\\runner.py",
+            "program": "${workspaceFolder}\\UrlExtractor\\runner.py",
             "console": "integratedTerminal"
         },
-        {
-            "name": "Run All",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}\\startup\\run_all.py",
-            "console": "integratedTerminal"
-        }
     ]
 }
