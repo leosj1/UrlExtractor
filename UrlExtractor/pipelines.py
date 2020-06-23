@@ -6,7 +6,7 @@
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 from UrlExtractor.diffbot import diff_get_article
-from sql import  get_connection
+from UrlExtractor.sql import  get_connection
 
 class UrlExtractorPipeline(object):
 

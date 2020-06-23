@@ -8,9 +8,9 @@ try:
         [
             'scrapy',
             'crawl',
-            'unz',
+            'intellihub',
             '-o',
-            'Export\\unz.csv',
+            'Export\\intellihub.csv',
         ]
     )
 except SystemExit:
