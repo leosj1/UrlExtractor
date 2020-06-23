@@ -49,7 +49,7 @@ def process_diff_data(diff_data):
             #Checking for comments
             if 'discussion' in data:
                 #Doing all non-nested comments first
-                comment_data = sorted(data['discussion']['posts'], key=lambda k: ("parentId" not in k, k.get("parentId", None)))
+                comment_data = sorted(data['discussion']['posts'], key=lambda k: ("parentId" in k, k.get("parentId", None)))
                 for c in comment_data:
                     comment = {}
                     comment['domain'] = domain
@@ -57,9 +57,9 @@ def process_diff_data(diff_data):
                     comment['username'] = c['author'] if 'author' in c else None
                     comment['comment'] = c['text']
                     comment['comment_original'] = c['html'] 
-                    comment['published_date'] = parse(c['date'])
+                    comment['published_date'] = parse(c['date']) if 'date' in c else None
                     comment['links'] = get_links(c['html'])
-                    comment['reply_count'] = len([x for x in comment_data if 'parentId' in x and c['id'] == x['ParentId']])
+                    comment['reply_count'] = len([x for x in comment_data if 'parentId' in x and c['id'] == x['parentId']])
                     parent_comment = [x for x in comment_data if 'parentId' in c and c['parentId'] == x['id']]
                     comment['reply_to'] = get_reply_to(parent_comment[0]) if parent_comment else None
                     insert_comment(comment)
