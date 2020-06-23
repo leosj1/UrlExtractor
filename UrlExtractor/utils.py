@@ -1,12 +1,18 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 from itertools import chain
 =======
+=======
+>>>>>>> 4336dfceec714b3829bd3c99f028c80889b25fbd
 # from BlogCrawler.pipelines import get_connection
 from urllib.parse import urlparse
 from json import JSONDecoder
 import pycountry
 import scrapy
+<<<<<<< HEAD
 >>>>>>> NEW SPIDERS
+=======
+>>>>>>> 4336dfceec714b3829bd3c99f028c80889b25fbd
 import json
 import os
 import re
@@ -30,6 +36,7 @@ def links_to_json(links):
 def get_links(html):
     return links_to_json(re.findall(r'https?://[^\s<>"]+|www\.[^\s<>"]+',html.replace('};', '')))
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 def relevant(content, keywords=[], use=None):
     if type(keywords) != list:
@@ -56,6 +63,8 @@ def relevant(content, keywords=[], use=None):
             return True
     return False
 =======
+=======
+>>>>>>> 4336dfceec714b3829bd3c99f028c80889b25fbd
 def get_matching_links(html, match_str):
     links = re.findall(r'https?://[^\s<>"]+|www\.[^\s<>"]+',html.replace('};', ''))
     return [link for link in links if match_str in link]
@@ -140,5 +149,9 @@ def author_title(author):
         return result.title()
     else:
         res = result
+<<<<<<< HEAD
     return res
 >>>>>>> NEW SPIDERS
+=======
+    return res
+>>>>>>> 4336dfceec714b3829bd3c99f028c80889b25fbd
