@@ -8,6 +8,8 @@ import os
 import re
 from dateutil.parser import parse
 import ast
+import urllib
+import requests
 
 def tags_to_json(tags):
     if tags:
@@ -32,7 +34,18 @@ def get_matching_links(html, match_str):
 
 def get_domain(url):
     return urlparse(url).netloc
-    
+
+def get_keywords():
+    with open('search_strings.txt') as s:
+        data = s.readlines()
+        return list(map(lambda x: x.replace('\n',''), data))
+
+def get_request(url):
+    r = requests.get(url)
+    if r.status_code == 200:
+        return r.text
+
+
 # def get_start_urls(domain):
 #     connection = get_connection()
 #     with connection.cursor() as cursor: 

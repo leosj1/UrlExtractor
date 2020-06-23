@@ -31,4 +31,4 @@ class WorldhealthSpider(scrapy.Spider):
         # blog['content_html'] = None
         # blog['links'] = None
         # blog['tags'] = None
-        yield blog
+        # yield blog
