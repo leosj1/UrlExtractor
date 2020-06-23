@@ -105,3 +105,8 @@ ITEM_PIPELINES = {
 # }
 # CONCURRENT_REQUESTS = 16
 # USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36'
+
+LOG_LEVEL = 'INFO'
+
+# CONCURRENT_REQUESTS = 1
+# DOWNLOAD_DELAY = 3

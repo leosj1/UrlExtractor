@@ -46,25 +46,6 @@ def get_request(url):
     if r.status_code == 200:
         return r.text
 
-
-# def get_start_urls(domain):
-#     connection = get_connection()
-#     with connection.cursor() as cursor: 
-#         cursor.execute("SELECT url FROM posts where domain = %s;", domain)
-#         records = [x['url'] for x in cursor.fetchall()]
-#     connection.close()
-#     return records
-
-# def get_users(domain):
-#     connection = get_connection()
-#     with connection.cursor() as cursor: 
-#         cursor.execute("SELECT username, user_id FROM comments where domain = %s;", domain)
-#         user_dict = {}
-#         for x in cursor.fetchall():
-#             user_dict[x['username']] = x['user_id']      
-#     connection.close()
-#     return user_dict
-
 def parse_datetime(date):
     if 'EDT' in date:
         result = parse(date, tzinfos={"EDT": "UTC-5"}) 
@@ -125,7 +106,7 @@ def author_title(author):
     else:
         res = result
     return res
-    
+
 def relevant(content, keywords=[], use=None):
     if type(keywords) != list:
         raise TypeError("Please insert keywords as a list")

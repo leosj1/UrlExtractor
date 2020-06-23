@@ -7,7 +7,7 @@ class UtopiayouarestandinginitSpider(scrapy.Spider):
     name = 'utopiayouarestandinginit'
     allowed_domains = ['utopiayouarestandinginit.com']
     domain = 'utopiayouarestandinginit.com'
-    start_urls = ['https://utopiayouarestandinginit.com/?s=covid-19', 'https://utopiayouarestandinginit.com/?s=coronavirus']
+    start_urls = ['https://utopiayouarestandinginit.com/?s=australia']
 
     def parse(self, response):
         all_urls = response.css('.post-title a').xpath('@href').extract()

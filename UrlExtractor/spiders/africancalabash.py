@@ -28,6 +28,6 @@ class AfricancalabashSpider(scrapy.Spider):
         blog['domain'] = self.domain
         blog['url'] = response.url
         blog['title'] = response.xpath('//h1[@class="entry-title"]/text()').get()  
-        content = " ".join(response.xpath('//div[@class="entry-content"]//text()').getall())
+        content = " ".join(response.xpath('//div[@class="entry-content"]//text()').getall()).replace('\n','').replace('\t','').replace('\r','')
         if relevant(content, use='ausi_covid') or relevant(content, use='ausi_dod'):
             yield blog
