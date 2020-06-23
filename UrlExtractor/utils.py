@@ -1,3 +1,4 @@
+from itertools import chain
 # from BlogCrawler.pipelines import get_connection
 from urllib.parse import urlparse
 from json import JSONDecoder
@@ -28,6 +29,8 @@ def links_to_json(links):
 
 def get_links(html):
     return links_to_json(re.findall(r'https?://[^\s<>"]+|www\.[^\s<>"]+',html.replace('};', '')))
+
+
 
 def get_matching_links(html, match_str):
     links = re.findall(r'https?://[^\s<>"]+|www\.[^\s<>"]+',html.replace('};', ''))
@@ -107,6 +110,7 @@ def author_title(author):
         res = result
     return res
 
+
 def relevant(content, keywords=[], use=None):
     if type(keywords) != list:
         raise TypeError("Please insert keywords as a list")
@@ -131,3 +135,4 @@ def relevant(content, keywords=[], use=None):
         if match and set(required).issubset(set(match)) and any([x for x in or_words if x in match]):
             return True
     return False
+
