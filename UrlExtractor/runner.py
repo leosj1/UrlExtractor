@@ -8,9 +8,9 @@ try:
         [
             'scrapy',
             'crawl',
-            'catallaxy',
-            # '-o',
-            # 'Export\\eutimes_2.csv',
+            'intellihub',
+            '-o',
+            'Export\\intellihub.csv',
         ]
     )
 except SystemExit:

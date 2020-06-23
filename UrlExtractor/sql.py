@@ -3,13 +3,20 @@ import pymysql
 
 
 def get_connection():
-    connection = pymysql.connect(host='144.167.35.221',
-                                user='diffbot',
-                                password='Cosmos1',
-                                db='blogs',
-                                charset='utf8mb4',
-                                use_unicode=True,
-                                cursorclass=pymysql.cursors.DictCursor)
+    connection = pymysql.connect(host='localhost',
+									user='scrapy',
+									password='Cosmos1',
+									db='blogs',
+									charset='utf8mb4',
+									use_unicode=True,
+									cursorclass=pymysql.cursors.DictCursor)
+    # connection = pymysql.connect(host='144.167.35.221',
+    #                             user='diffbot',
+    #                             password='Cosmos1',
+    #                             db='blogs',
+    #                             charset='utf8mb4',
+    #                             use_unicode=True,
+    #                             cursorclass=pymysql.cursors.DictCursor)
     return connection
 
 def commit_to_db(query, data, error=0):
