@@ -6,7 +6,7 @@ from UrlExtractor.items import Posts
 class TheshovelSpider(scrapy.Spider):
     name = 'theshovel'
     domain= 'theshovel.com.au'
-    allowed_domains = ['www.theshovel.com.au']
+    allowed_domains = ['www.theshovel.com.au    ']
     start_urls = ['https://www.theshovel.com.au/?s=covid-19']
     user_agent = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
     # download_delay = 4
