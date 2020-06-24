@@ -40,7 +40,7 @@ def get_domain(url):
     return urlparse(url).netloc
 
 def get_keywords():
-    with open('UrlExtractor\\search_strings.txt') as s:
+    with open('search_strings.txt') as s:
         data = s.readlines()
     return list(map(lambda x: x.replace('\n',''), data))
 
