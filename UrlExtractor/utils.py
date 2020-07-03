@@ -28,8 +28,9 @@ def links_to_json(links):
         return None
 
 def get_links(html):
-    if html:
-        return links_to_json(re.findall(r'https?://[^\s<>"]+|www\.[^\s<>"]+',html.replace('};', '')))
+    if type(html) == None: raise TypeError('''Passed a None object to get links. 
+        This should be the html of the page, so look into your code why you aren't selecting the hmtl properly.''')
+    return links_to_json(re.findall(r'https?://[^\s<>"]+|www\.[^\s<>"]+',html.replace('};', '')))
 
 def get_matching_links(html, match_str):
     links = re.findall(r'https?://[^\s<>"]+|www\.[^\s<>"]+',html.replace('};', ''))
