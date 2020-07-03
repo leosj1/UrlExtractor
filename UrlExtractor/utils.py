@@ -28,9 +28,8 @@ def links_to_json(links):
         return None
 
 def get_links(html):
-    return links_to_json(re.findall(r'https?://[^\s<>"]+|www\.[^\s<>"]+',html.replace('};', '')))
-
-
+    if html:
+        return links_to_json(re.findall(r'https?://[^\s<>"]+|www\.[^\s<>"]+',html.replace('};', '')))
 
 def get_matching_links(html, match_str):
     links = re.findall(r'https?://[^\s<>"]+|www\.[^\s<>"]+',html.replace('};', ''))
@@ -118,6 +117,12 @@ def relevant(content, keywords=[], use=None):
         raise InterruptedError("You defined keywords and a built in check. Please use one or the other")
     elif not keywords and not use:
         raise InterruptedError("Please provide keywords or use some built in ones")
+
+    #Cleaning content, return if empty after cleaning
+    escapes = ''.join([chr(char) for char in range(1, 32)])
+    translator = str.maketrans('', '', escapes)
+    content = content.translate(translator)
+    if not content.strip(): return False
 
     #Using built in keywords
     if use:
