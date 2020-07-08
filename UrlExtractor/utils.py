@@ -1,4 +1,3 @@
-from itertools import chain
 # from BlogCrawler.pipelines import get_connection
 from urllib.parse import urlparse
 from json import JSONDecoder
@@ -132,13 +131,20 @@ def relevant(content, keywords=[], use=None):
             if use in data: keywords = data[use]
             else: raise KeyError(f"We don't have built in keywords for {use}. You can add it yourself in the keywords.json file\nHere are the ones available: {data.keys()}")
 
-    for keyword in keywords:
-        #+ Keywords
-        required = [x.lower() for x in keyword.split("+") if "|" not in x]
-        or_words = list(chain(*[x.lower().split("|") for x in keyword.split("+") if "|" in x]))
-        search_terms = keyword.replace("+", "|").replace('(','').replace(')','')
-        match = re.findall(search_terms, content.lower(), re.IGNORECASE)
-        if match and set(required).issubset(set(match)) and any([x for x in or_words if x in match]):
-            return True
+    for groups in keywords:
+        if "+( " in groups or " )" in groups: raise ValueError("Don't leave a space before or after '+( ', ' )' instead bump the word right next to it.")
+        #Grouping
+        if groups.startswith("("):
+            grouped = re.findall('\[[^\]]*\]|\([^\)]*\)|\"[^\"]*\"|\S+',groups)
+            grouped = [x.replace("(+","+") for x in grouped if x != ")"]
+        else: grouped = [groups]
+        for keyword in grouped:
+            #+ Keywords
+            required = [x.lower().replace("+","") for x in keyword.split() if "+" in x and '(' not in x]
+            or_words = [x.lower().replace("+(","").replace(")","") for x in keyword.split() if "+" not in x or "+(" in x]
+            search_terms = "|".join(required + or_words)
+            match = re.findall(search_terms, content.lower(), re.IGNORECASE)
+            if match and set(required).issubset(set(match)) and any([x for x in or_words if x in match]):
+                return True
     return False
 
