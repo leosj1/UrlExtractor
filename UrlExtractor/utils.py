@@ -31,7 +31,6 @@ def get_links(html):
     return links_to_json(re.findall(r'https?://[^\s<>"]+|www\.[^\s<>"]+',html.replace('};', '')))
 
 
-
 def get_matching_links(html, match_str):
     links = re.findall(r'https?://[^\s<>"]+|www\.[^\s<>"]+',html.replace('};', ''))
     return [link for link in links if match_str in link]
@@ -135,4 +134,28 @@ def relevant(content, keywords=[], use=None):
         if match and set(required).issubset(set(match)) and any([x for x in or_words if x in match]):
             return True
     return False
+
+def get_api_keys():
+    with open('api_keys.txt') as f:
+        data = f.readlines()
+    f.close()
+    return list(map(lambda x: x.replace('\n', ''), data))
+
+def get_relevant_keywords(use = None):
+    if use:
+        with open('keywords_test.json') as json_file:
+            keyword_data = json.load(json_file)
+            if use in keyword_data: keywords = keyword_data[use]
+            else: raise KeyError(f"We don't have built in keywords for {use}. You can add it yourself in the keywords.json file\nHere are the ones available: {keyword_data.keys()}")
+
+        result = []
+        # for keyword in keywords:
+        required_words = [x.lower() for x in keywords.split("+") if "|" not in x]
+        or_words = list(map(lambda x: x.replace('(','').replace(')',''), list(chain(*[x.lower().split("|") for x in keywords.split("+") if "|" in x]))))
+
+        if required_words and or_words:
+            required_words = "\"" + '\" \"'.join(required_words) + "\""
+            or_words = "\"" + '\" \"'.join(or_words) + "\""
+            return required_words, or_words
+
 
