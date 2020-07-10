@@ -133,7 +133,7 @@ def relevant(content, keywords=[], use=None):
             else: raise KeyError(f"We don't have built in keywords for {use}. You can add it yourself in the keywords.json file\nHere are the ones available: {data.keys()}")
 
     for groups in keywords:
-        if "+( " in groups or " )" in groups: raise ValueError("Don't leave a space before or after '+( ', ' )' instead bump the word right next to it.")
+        if "+( " in groups or " )" in groups: raise ValueError(f"Don't leave a space before or after '+( ', ' )' instead bump the word right next to it. \n{groups}")
         #Grouping
         if groups.startswith("("):
             grouped = re.findall('\[[^\]]*\]|\([^\)]*\)|\"[^\"]*\"|\S+',groups)
