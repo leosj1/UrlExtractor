@@ -10,6 +10,7 @@ import string, random, json, re
 from UrlExtractor.utils import links_to_json, tags_to_json, get_links
 from UrlExtractor.sql import get_connection, commit_to_db
 
+# token = "fc7ea3a02234f4589f5042bfcf9d637f"
 token = "fc7ea3a02234f4589f5042bfcf9d637f"
 
 
