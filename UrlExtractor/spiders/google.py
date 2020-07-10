@@ -3,9 +3,10 @@ import scrapy
 import requests
 from tqdm import tqdm
 import json
+import datetime
 
 from UrlExtractor.items import Posts
-from UrlExtractor.utils import get_api_keys, get_relevant_keywords
+from UrlExtractor.utils import get_api_keys, get_relevant_keywords, last_page, get_start_page
 
 class GoogleSpider(scrapy.Spider):
     name = 'google'
@@ -26,12 +27,14 @@ class GoogleSpider(scrapy.Spider):
 def get_google_request():
     results = []
     api_keys = get_api_keys()
-    start = 0
+    api_keys = [x for x in api_keys if x != '']
     domain = "wordpress.com"
+    start = get_start_page(domain)
     location = "Australia"
     siteSearchFilter = "i"
     cse_key = "008008521178205893081:w7ksepj1jro"
-    required_keywords, or_keywords = get_relevant_keywords(use='ausi_dod')
+    project = 'ausi_dod'
+    required_keywords, or_keywords = get_relevant_keywords(use=project)
     pbar = tqdm(total=len(api_keys), desc="Google Web Requests")
     
     while True: 
@@ -47,7 +50,10 @@ def get_google_request():
             if api_keys:
                 api_keys.remove(api_keys[0])
                 pbar.update(1)
-                if not api_keys: break
+                if not api_keys: 
+                    last_page_data = f'{domain},{datetime.datetime.now().strftime("%Y-%m-%d %H:%M")},{start},{project}'
+                    last_page(last_page_data)
+                    break
     return results
 
          

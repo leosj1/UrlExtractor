@@ -11,6 +11,7 @@ from dateutil.parser import parse
 import ast
 import urllib
 import requests
+import pandas as pd
 
 def tags_to_json(tags):
     if tags:
@@ -153,6 +154,17 @@ def get_api_keys():
         data = f.readlines()
     f.close()
     return list(map(lambda x: x.replace('\n', ''), data))
+
+def last_page(data):
+    with open('last_pages.csv','a') as fd:
+        fd.write(data)
+        fd.close()
+
+def get_start_page(domain):
+    d = pd.read_csv('last_pages.csv')
+    start = d[d['domain'] == 'wordpress.com']['last_page'].max()
+    start = start if start > 0 else 0
+    return start
 
 def get_relevant_keywords(use = None):
     if use:
