@@ -126,7 +126,7 @@ def relevant(content, keywords=[], use=None):
 
     #Using built in keywords
     if use:
-        with open('keywords.json') as json_file:
+        with open('keywords.json', encoding="utf-8") as json_file:
             data = json.load(json_file)
             if use in data: keywords = data[use]
             else: raise KeyError(f"We don't have built in keywords for {use}. You can add it yourself in the keywords.json file\nHere are the ones available: {data.keys()}")
@@ -137,6 +137,9 @@ def relevant(content, keywords=[], use=None):
         if groups.startswith("("):
             grouped = re.findall('\[[^\]]*\]|\([^\)]*\)|\"[^\"]*\"|\S+',groups)
             grouped = [x.replace("(+","+") for x in grouped if x != ")"]
+            for pos, i in enumerate(grouped):
+                if i.endswith(")") and "(" not in i:
+                    grouped[pos] = i.replace(")","")
         else: grouped = [groups]
         for keyword in grouped:
             #+ Keywords
