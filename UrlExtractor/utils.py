@@ -11,7 +11,6 @@ from dateutil.parser import parse
 import ast
 import urllib
 import requests
-import pandas as pd
 
 def tags_to_json(tags):
     if tags:
@@ -127,7 +126,7 @@ def relevant(content, keywords=[], use=None):
 
     #Using built in keywords
     if use:
-        with open('keywords.json') as json_file:
+        with open('keywords.json', encoding="utf-8") as json_file:
             data = json.load(json_file)
             if use in data: keywords = data[use]
             else: raise KeyError(f"We don't have built in keywords for {use}. You can add it yourself in the keywords.json file\nHere are the ones available: {data.keys()}")
@@ -138,6 +137,9 @@ def relevant(content, keywords=[], use=None):
         if groups.startswith("("):
             grouped = re.findall('\[[^\]]*\]|\([^\)]*\)|\"[^\"]*\"|\S+',groups)
             grouped = [x.replace("(+","+") for x in grouped if x != ")"]
+            for pos, i in enumerate(grouped):
+                if i.endswith(")") and "(" not in i:
+                    grouped[pos] = i.replace(")","")
         else: grouped = [groups]
         for keyword in grouped:
             #+ Keywords
@@ -149,38 +151,40 @@ def relevant(content, keywords=[], use=None):
                 return True
     return False
 
+def get_relevant_keywords(use = None):
+    results = []
+    if use:
+        with open('keywords.json', encoding="utf-8") as json_file:
+            data = json.load(json_file)
+            if use in data: keywords = data[use]
+            else: raise KeyError(f"We don't have built in keywords for {use}. You can add it yourself in the keywords.json file\nHere are the ones available: {data.keys()}")
+
+    for groups in keywords:
+        if "+( " in groups or " )" in groups: raise ValueError(f"Don't leave a space before or after '+( ', ' )' instead bump the word right next to it. \n{groups}")
+        #Grouping
+        if groups.startswith("("):
+            grouped = re.findall('\[[^\]]*\]|\([^\)]*\)|\"[^\"]*\"|\S+',groups)
+            grouped = [x.replace("(+","+") for x in grouped if x != ")"]
+            for pos, i in enumerate(grouped):
+                if i.endswith(")") and "(" not in i:
+                    grouped[pos] = i.replace(")","")
+        else: grouped = [groups]
+        for keyword in grouped:
+            #+ Keywords
+            required = [x.lower().replace("+","") for x in keyword.split() if "+" in x and '(' not in x]
+            or_words = [x.lower().replace("+(","").replace(")","") for x in keyword.split() if "+" not in x or "+(" in x]        
+            required_words = "\"" + '\" \"'.join(required) + "\""
+            or_words = "\"" + '\" \"'.join(or_words) + "\""
+            results.append((required_words, or_words))
+    return results
+
+
 def get_api_keys():
     with open('api_keys.txt') as f:
         data = f.readlines()
     f.close()
     return list(map(lambda x: x.replace('\n', ''), data))
 
-def last_page(data):
-    with open('last_pages.csv','a') as fd:
-        fd.write(data)
-        fd.close()
 
-def get_start_page(domain):
-    d = pd.read_csv('last_pages.csv')
-    start = d[d['domain'] == 'wordpress.com']['last_page'].max()
-    start = start if start > 0 else 0
-    return start
-
-def get_relevant_keywords(use = None):
-    if use:
-        with open('keywords_test.json') as json_file:
-            keyword_data = json.load(json_file)
-            if use in keyword_data: keywords = keyword_data[use]
-            else: raise KeyError(f"We don't have built in keywords for {use}. You can add it yourself in the keywords.json file\nHere are the ones available: {keyword_data.keys()}")
-
-        result = []
-        # for keyword in keywords:
-        required_words = [x.lower() for x in keywords.split("+") if "|" not in x]
-        or_words = list(map(lambda x: x.replace('(','').replace(')',''), list(chain(*[x.lower().split("|") for x in keywords.split("+") if "|" in x]))))
-
-        if required_words and or_words:
-            required_words = "\"" + '\" \"'.join(required_words) + "\""
-            or_words = "\"" + '\" \"'.join(or_words) + "\""
-            return required_words, or_words
 
 
