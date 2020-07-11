@@ -11,6 +11,7 @@ from dateutil.parser import parse
 import ast
 import urllib
 import requests
+import pandas as pd
 
 def tags_to_json(tags):
     if tags:
@@ -185,6 +186,15 @@ def get_api_keys():
     f.close()
     return list(map(lambda x: x.replace('\n', ''), data))
 
+def last_page(data):
+    with open('last_pages.csv', 'a') as f:
+        f.write(data)
+        f.close()
 
+def get_start_page(domain, project):
+    result = pd.read_csv('last_pages.csv')
+    page_num = result[(result['domain'] == domain) & (result['project'] == project)]['last_page'].max()
+    page_num = 0 if str(page_num) == 'nan' else page_num
+    return page_num
 
 
