@@ -12,6 +12,7 @@ import ast
 import urllib
 import requests
 import pandas as pd
+import io
 
 def tags_to_json(tags):
     if tags:
@@ -180,8 +181,8 @@ def get_relevant_keywords(use = None):
     return results
 
 
-def get_api_keys():
-    with open('api_keys.txt') as f:
+def get_txt_data(file_name):
+    with open(f'{file_name}.txt') as f:
         data = f.readlines()
     f.close()
     return list(map(lambda x: x.replace('\n', ''), data))
@@ -191,10 +192,19 @@ def last_page(data):
         f.write(data)
         f.close()
 
-def get_start_page(domain, project):
-    result = pd.read_csv('last_pages.csv')
-    page_num = result[(result['domain'] == domain) & (result['project'] == project)]['last_page'].max()
+def get_start_page(domain, project, words):
+    with open('last_pages.csv', 'r') as f:
+        lines = f.readlines()
+        fo = io.StringIO()
+        fo.writelines(u"" + line.replace(',',';', 4) for line in lines)
+        fo.seek(0) 
+        result = pd.read_csv(fo, sep=';')
+    data = result[(result['domain'] == domain) & (result['project'] == project) & (result['keywords'] == str(words))]
+    # Last page
+    page_num = data['last_page'].max()
+    status = 'NOT_FOUND' if str(page_num) == 'nan' else 'FOUND'
     page_num = 0 if str(page_num) == 'nan' else page_num
-    return page_num
+
+    return page_num, status
 
 
