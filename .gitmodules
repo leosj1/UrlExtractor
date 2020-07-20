@@ -1,0 +1,3 @@
+[submodule "diffbot"]
+	path = diffbot
+	url = https://github.com/Josephkready/diffbot.git
