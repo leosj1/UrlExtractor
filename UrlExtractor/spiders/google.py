@@ -45,7 +45,9 @@ def get_google_request(words, project):
     # domain = domains[0]
 
     for domain in domains:
-        domain = get_domain(domain)
+        domain_name = get_domain(domain)
+        domain = domain if not domain_name else domain_name
+
         start_index, start_status = get_start_page(domain, project, words)
         start = -1 if start_index == -1 else start_index + 10
 
@@ -55,10 +57,10 @@ def get_google_request(words, project):
         pbar = tqdm(total=len(api_keys), desc="Google Web Requests")
 
         required_keywords , or_keywords = words
-        required_keywords = urllib.parse.quote(required_keywords, safe='')
-        or_keywords = urllib.parse.quote(or_keywords, safe='')
+        # required_keywords = urllib.parse.quote(required_keywords, safe='')
+        # or_keywords = urllib.parse.quote(or_keywords, safe='')
 
-        limit = 50
+        limit = 100
         today = datetime.datetime.now() #today's date
         
         while True:
@@ -103,7 +105,7 @@ def get_google_request(words, project):
                         'imgColorType': None,
                         'imgDominantColor': None,
                         'alt': None,
-                        'as_occt': 'body' #ass occured in body and not anywhere else
+                        'occt': 'body' #ass occured in body and not anywhere else
                         }
 
             # page_url = f"https://www.googleapis.com/customsearch/v1?key={api_keys[0]}&start={start_index}&cx={cse_key}&siteSearch={domain}&siteSearchFilter={siteSearchFilter}&exactTerms={required_keywords}&orTerms={or_keywords}&as_occt=body&dateRestrict=m[8]"
