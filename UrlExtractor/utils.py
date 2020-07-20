@@ -188,7 +188,7 @@ def get_txt_data(file_name):
     return list(map(lambda x: x.replace('\n', ''), data))
 
 def last_page(data):
-    with open('last_pages.csv', 'a') as f:
+    with open('last_pages.csv', 'a', encoding='utf-8') as f:
         f.write(data)
         f.close()
 
