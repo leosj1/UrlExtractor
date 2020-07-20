@@ -15,7 +15,7 @@ class GoogleSpider(scrapy.Spider):
     name = 'google'
     allowed_domains = ['google.com', 'wordpress.com']
     start_urls = ['http://google.com/']
-    project = 'muri'
+    project = 'montenegro'
 
     # Standard google format 
     # "https://www.googleapis.com/customsearch/v1?q={searchTerms}&num={count?}&start={startIndex?}&lr={language?}&safe={safe?}&cx={cx?}&sort={sort?}&filter={filter?}&gl={gl?}&cr={cr?}&googlehost={googleHost?}&c2coff={disableCnTwTranslation?}&hq={hq?}&hl={hl?}&siteSearch={siteSearch?}&siteSearchFilter={siteSearchFilter?}&exactTerms={exactTerms?}&excludeTerms={excludeTerms?}&linkSite={linkSite?}&orTerms={orTerms?}&relatedSite={relatedSite?}&dateRestrict={dateRestrict?}&lowRange={lowRange?}&highRange={highRange?}&searchType={searchType}&fileType={fileType?}&rights={rights?}&imgSize={imgSize?}&imgType={imgType?}&imgColorType={imgColorType?}&imgDominantColor={imgDominantColor?}&alt=json"
@@ -72,6 +72,10 @@ def get_google_request(words, project):
                     if 'items' in response:
                         results += response['items']
 
+                         # Keeping track of the extracted keywords and start index
+                        last_page_data = f'{domain},{today.strftime("%Y-%m-%d %H:%M")},{start_index},{project},{words}\n'
+                        last_page(last_page_data)
+
                         if 'nextPage' in response['queries']:
                             # Limiting to top 11 results
                             next_index = response['queries']['nextPage'][0]['startIndex']
@@ -107,12 +111,7 @@ def get_google_request(words, project):
                     break
             else:
                 break
-
-        # Keeping track of the extracted keywords and start index
-        if start_index != -1 or start != -1:
-            last_page_data = f'{domain},{today.strftime("%Y-%m-%d %H:%M")},{start_index},{project},{words}\n'
-            last_page(last_page_data)
-
+                   
         # domains.remove(domain)
 
     return results
