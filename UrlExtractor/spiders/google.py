@@ -15,7 +15,7 @@ class GoogleSpider(scrapy.Spider):
     name = 'google'
     allowed_domains = ['google.com', 'wordpress.com']
     start_urls = ['http://google.com/']
-    project = 'ausi_covid'
+    project = 'ausi_dod'
 
     def parse(self, response):
         words = get_relevant_keywords(use=self.project)
@@ -94,7 +94,7 @@ def get_google_request(words, project):
                         'linkSite': None,
                         'orTerms': or_keywords,
                         'relatedSite': None,
-                        'dateRestrict': 'm[8]',
+                        'dateRestrict': None, #'m[8]'
                         'lowRange': None,
                         'highRange': None,
                         'searchType': None,
