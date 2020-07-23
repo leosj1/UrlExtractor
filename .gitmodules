@@ -1,0 +1,3 @@
+[submodule "cosmos_diffbot"]
+	path = cosmos_diffbot
+	url = https://github.com/Josephkready/cosmos_diffbot.git
