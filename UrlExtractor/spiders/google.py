@@ -25,7 +25,7 @@ class GoogleSpider(scrapy.Spider):
         for word in words:
             response = get_google_request(word, self.project)
             for items in response:
-                if not items['link'].endswith('.pdf')  and 'archive.html' not in items['link'] and '/author/' not in items['link'] and '/category/' not in items['link'] and '/tag/' not in items['link'] and 'http-redirect' not in items['link'] and '/articles/' not in items['link'] and 'search?updated-max' not in items['link'] and '&max-results=' not in items['link'] and 'index.php?' not in items['link'] :
+                if not items['link'].endswith('.pdf')  and 'archive.html' not in items['link'] and '/author/' not in items['link'] and '/category/' not in items['link'] and '/tag/' not in items['link'] and 'http-redirect' not in items['link'] and '/articles/' not in items['link'] and 'search?updated-max' not in items['link'] and '&max-results=' not in items['link'] and 'index.php?' not in items['link'] and '/page/' not in items['link'] and '.html?page=' not in items['link'] and 'editorial-' not in items['link'] and '/label/' not in items['link']:
                     blog = Posts()
                     # blog['domain'] = domain
                     try:
