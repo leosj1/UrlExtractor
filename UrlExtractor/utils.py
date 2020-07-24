@@ -208,4 +208,12 @@ def get_start_page(domain, project, words):
 
     return page_num, status
 
+def open_keywords(use=None, fname='keywords.json',):
+    with open(fname, encoding="utf-8") as json_file:
+        data = json.load(json_file)
+    if not use: return data
+    else:
+        try: return data[use]
+        except KeyError: raise KeyError("You chose a project name that is not in {}: {}".format(fname, use))
+
 
