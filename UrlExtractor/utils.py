@@ -194,7 +194,7 @@ def last_page(data):
         f.close()
 
 def get_start_page(domain, project, words):
-    with open('last_pages.csv', 'r') as f:
+    with open('last_pages.csv', 'r', encoding='utf-8') as f:
         lines = f.readlines()
         fo = io.StringIO()
         fo.writelines(u"" + line.replace(',',';', 4) for line in lines)
@@ -207,5 +207,13 @@ def get_start_page(domain, project, words):
     page_num = 0 if str(page_num) == 'nan' else page_num
 
     return page_num, status
+
+def open_keywords(use=None, fname='keywords.json',):
+    with open(fname, encoding="utf-8") as json_file:
+        data = json.load(json_file)
+    if not use: return data
+    else:
+        try: return data[use]
+        except KeyError: raise KeyError("You chose a project name that is not in {}: {}".format(fname, use))
 
 

@@ -5,7 +5,7 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
-from UrlExtractor.diffbot import diff_get_article
+from cosmos_diffbot.diffbot import diff_get_article
 from UrlExtractor.sql import  get_connection
 
 class UrlExtractorPipeline(object):
