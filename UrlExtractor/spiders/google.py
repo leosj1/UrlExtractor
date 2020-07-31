@@ -15,7 +15,7 @@ class GoogleSpider(scrapy.Spider):
     name = 'google'
     allowed_domains = ['google.com', 'wordpress.com']
     start_urls = ['http://google.com/']
-    project = 'muri'
+    project = 'ausi_dod'
     today = datetime.datetime.now() #today's date
 
     def parse(self, response):
