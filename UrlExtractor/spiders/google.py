@@ -15,7 +15,7 @@ class GoogleSpider(scrapy.Spider):
     name = 'google'
     allowed_domains = ['google.com', 'wordpress.com']
     start_urls = ['http://google.com/']
-    project = 'ausi_dod'
+    project = 'muri'
     today = datetime.datetime.now() #today's date
 
     def parse(self, response):
@@ -26,13 +26,14 @@ class GoogleSpider(scrapy.Spider):
             domain_name = get_domain(domain)
             domain = domain if not domain_name else domain_name
 
-            start_index, start_status = get_start_page(domain, self.project, words)
-            start = -1 if start_index == -1 else start_index + 10
-
             for word in words:
+                start_index, start_status = get_start_page(domain, self.project, word)
+                start = -1 if start_index == -1 else start_index + 10
+
                 response = get_google_request(word, self.project, domain, start_status, start_index, start)
                 item_response = response[0]
                 last_crawled_start = response[1]
+
                 for items in item_response:
                     if not items['link'].endswith('.pdf')  and 'archive.html' not in items['link'] and '/author/' not in items['link'] and '/category/' not in items['link'] and '/tag/' not in items['link'] and 'http-redirect' not in items['link'] and '/articles/' not in items['link'] and 'search?updated-max' not in items['link'] and '&max-results=' not in items['link'] and 'index.php?' not in items['link'] :
                         blog = Posts()
@@ -83,7 +84,7 @@ def get_google_request(words, project, domain, start_status, start_index, start)
     # required_keywords = urllib.parse.quote(required_keywords, safe='')
     # or_keywords = urllib.parse.quote(or_keywords, safe='')
 
-    limit = 100
+    limit = 200
     today = datetime.datetime.now() #today's date
     
     while True:
@@ -105,7 +106,7 @@ def get_google_request(words, project, domain, start_status, start_index, start)
                     'sort': None,
                     'filter': None,
                     'gl': None,
-                    'cr': None,
+                    'cr': "countryUA", #countryUA - Ukraine #countryAU - Australis
                     'googlehost': None,
                     'c2coff': None,
                     'hq': None,
@@ -142,7 +143,7 @@ def get_google_request(words, project, domain, start_status, start_index, start)
                     results += response['items']
 
                     if 'nextPage' in response['queries']:
-                        # Limiting to top 11 results
+                        # Limiting to top 'limit' results
                         next_index = response['queries']['nextPage'][0]['startIndex']
                         if  next_index == limit + 1 or next_index == limit:
                             break

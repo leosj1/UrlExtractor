@@ -194,7 +194,7 @@ def last_page(data):
         f.close()
 
 def get_start_page(domain, project, words):
-    with open('last_pages.csv', 'r') as f:
+    with open('last_pages.csv', 'r', encoding='utf-8') as f:
         lines = f.readlines()
         fo = io.StringIO()
         fo.writelines(u"" + line.replace(',',';', 4) for line in lines)
