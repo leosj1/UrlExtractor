@@ -20,7 +20,7 @@ class GoogleSpider(scrapy.Spider):
 
     def parse(self, response):
         words = get_relevant_keywords(use=self.project)
-        domains = open_keywords(use = self.project, fname=r"C:\UrlExtractor\UrlExtractor\cosmos_diffbot\domains.json")
+        domains = open_keywords(use = self.project, fname=r"C:\Users\shaik\Documents\UrlExtractor\UrlExtractor\cosmos_diffbot\domains.json")
 
         for domain in domains:
             domain_name = get_domain(domain)
@@ -35,7 +35,7 @@ class GoogleSpider(scrapy.Spider):
                 last_crawled_start = response[1]
 
                 for items in item_response:
-                    if not items['link'].endswith('.pdf')  and 'archive.html' not in items['link'] and '/author/' not in items['link'] and '/category/' not in items['link'] and '/tag/' not in items['link'] and 'http-redirect' not in items['link'] and '/articles/' not in items['link'] and 'search?updated-max' not in items['link'] and '&max-results=' not in items['link'] and 'index.php?' not in items['link'] :
+                    if not items['link'].endswith('.pdf')  and 'archive.html' not in items['link'] and '/author/' not in items['link'] and '/category/' not in items['link'] and '/tag/' not in items['link'] and 'http-redirect' not in items['link'] and '/articles/' not in items['link'] and 'search?updated-max' not in items['link'] and '&max-results=' not in items['link'] and 'index.php?' not in items['link'] and '%252F' not in items['link']:
                         blog = Posts()
 
                         if items['link']:
@@ -106,7 +106,7 @@ def get_google_request(words, project, domain, start_status, start_index, start)
                     'sort': None,
                     'filter': None,
                     'gl': None,
-                    'cr': "countryUA", #countryUA - Ukraine #countryAU - Australis
+                    'cr': None, #countryUA - Ukraine #countryAU - Australis
                     'googlehost': None,
                     'c2coff': None,
                     'hq': None,
