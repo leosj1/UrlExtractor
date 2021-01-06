@@ -2,7 +2,6 @@ from dateutil.relativedelta import relativedelta
 from urllib.parse import urlparse
 from dateutil.parser import parse
 from tld import get_tld
-from tqdm import tqmd
 import random, string
 import urllib.parse
 import requests
@@ -98,8 +97,6 @@ def diff_check_account_balance():
 
 def process_diff_data(diff_data):
     articles = []
-    if len(diff_data) > 5:
-        pbar = tqdm(total=len(diff_data), desc="Processing Data")
     for data in diff_data: 
         if 'pageUrl' in data:
             #Cleaning
@@ -164,8 +161,6 @@ def process_diff_data(diff_data):
                         parent_comment = [x for x in comment_data if 'parentId' in c and c['parentId'] == x['id']]
                         comment['reply_to'] = get_reply_to(parent_comment[0], data['pageUrl']) if parent_comment else None
                         insert_comment(comment)
-        if len(diff_data) > 5:pbar.update()
-    if len(diff_data) > 5:pbar.close()
     return articles
 
     

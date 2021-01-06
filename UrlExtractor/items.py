@@ -20,3 +20,16 @@ class Posts(scrapy.Item):
         """only print out attr1 after exiting the Pipeline"""
         return repr({"Blog URL": self._values['url']})
  
+
+class AnyPosts(scrapy.Item):
+    domain = scrapy.Field()
+    url = scrapy.Field()
+    crawl_diffbot = scrapy.Field()
+    file_name = scrapy.Field()
+   
+
+    #modifying the print output
+    def __repr__(self):
+        """only print out attr1 after exiting the Pipeline"""
+        return repr({"Blog URL": self._values['url']})
+ 
